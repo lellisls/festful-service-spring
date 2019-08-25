@@ -10,6 +10,8 @@ public class ServletUtil {
 		if( xml != null ) {
 			PrintWriter writer = resp.getWriter();
 			resp.setContentType("application/xml;charset=UTF-8");
+			resp.setCharacterEncoding("UTF-8");
+
 			writer.write(xml);
 			writer.close();
 		}
@@ -19,6 +21,7 @@ public class ServletUtil {
 		if( json != null ) {
 			PrintWriter writer = resp.getWriter();
 			resp.setContentType("application/json;charset=UTF-8");
+			resp.setCharacterEncoding("UTF-8");
 			writer.write(json);
 			writer.close();
 		}
