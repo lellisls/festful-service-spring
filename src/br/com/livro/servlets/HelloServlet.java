@@ -30,17 +30,11 @@ public class HelloServlet extends HttpServlet {
 	
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String nome = req.getParameter("nome");
-		String sobrenome = req.getParameter("sobrenome");
-		
 		resp.getWriter().print("Ola PUT");
 	}
 	
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String nome = req.getParameter("nome");
-		String sobrenome = req.getParameter("sobrenome");
-		
 		resp.getWriter().print("Ola DELETE");
 	}
 }
