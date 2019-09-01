@@ -1,18 +1,27 @@
-import static org.junit.jupiter.api.Assertions.*;
+package test;
 
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
 import br.com.livro.domain.Carro;
 import br.com.livro.domain.CarroService;
+import junit.framework.TestCase;
 
-class CarroTest {
+public class CarroTest extends TestCase {
 
-	private CarroService carroService = new CarroService();
+	private CarroService carroService;
 
-	@Test
-	void testListaCarros() {
+	public CarroTest() {
+		super();
+	}
+	
+	@Override
+	protected void setUp() throws Exception {
+		super.setUp();
+		
+		carroService = (CarroService) SpringUtil.getInstance().getBean(CarroService.class);
+	}
+	
+	public void testListaCarros() {
 		List<Carro> carros = carroService.getCarros();
 		assertNotNull(carros);
 		
@@ -29,8 +38,7 @@ class CarroTest {
 		
 	}
 
-	@Test
-	void testSalvarDeletarCarro() {
+	public void testSalvarDeletarCarro() {
 		Carro c = new Carro();
 		
 		c.setNome("Teste");
