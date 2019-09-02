@@ -26,6 +26,7 @@ import org.springframework.stereotype.Component;
 import br.com.livro.domain.Carro;
 import br.com.livro.domain.CarroService;
 import br.com.livro.domain.Response;
+import br.com.livro.domain.UploadService;
 
 @Path("/carros")
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -35,6 +36,9 @@ public class CarrosResource {
 
 	@Autowired
 	private CarroService carroService;
+	
+	@Autowired
+	private UploadService uploadService;
 
 	@GET
 	public List<Carro> get() {
@@ -95,18 +99,8 @@ public class CarrosResource {
 
 				try {
 					String filename = field.getFormDataContentDisposition().getFileName();
-					// JVM's temporary folder
-					File tmpDir = new File(System.getProperty("java.io.tmpdir"), "carros");
-					if (!tmpDir.exists()) {
-						tmpDir.mkdir();
-					}
-					// Creates the file
-					File file = new File(tmpDir, filename);
-					FileOutputStream out = new FileOutputStream(file);
-
-					IOUtils.copy(in, out);
-					IOUtils.closeQuietly(out);
-					System.out.println("File: " + file);
+					String path = uploadService.upload(filename, in);
+					System.out.println("File: " + path);
 					return Response.Ok("File received sucessfully");
 				} catch (IOException e) {
 					e.printStackTrace();
