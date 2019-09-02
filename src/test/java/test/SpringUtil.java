@@ -33,7 +33,7 @@ public class SpringUtil {
 		return instance;
 	}
 
-	@SuppressWarnings("rawtipes")
+	@SuppressWarnings("rawtypes")
 	public Object getBean(Class c) {
 		if (ctx == null) {
 			return null;

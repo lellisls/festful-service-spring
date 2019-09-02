@@ -6,6 +6,7 @@ import org.hibernate.Query;
 import org.springframework.stereotype.Component;
 
 @Component
+@SuppressWarnings("unchecked")
 public class CarroDAO extends HibernateDAO<Carro> {
 
 	public CarroDAO() {
