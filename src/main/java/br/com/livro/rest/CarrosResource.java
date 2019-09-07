@@ -29,6 +29,7 @@ import org.springframework.stereotype.Component;
 import br.com.livro.domain.Carro;
 import br.com.livro.domain.CarroService;
 import br.com.livro.domain.Response;
+import br.com.livro.domain.ResponseWithUrl;
 import br.com.livro.domain.UploadService;
 
 @Path("/carros")
@@ -92,7 +93,7 @@ public class CarrosResource {
 
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	public Response postFoto(final FormDataMultiPart multiPart) {
+	public ResponseWithUrl postFoto(final FormDataMultiPart multiPart) throws Exception {
 
 		if (multiPart != null && multiPart.getFields() != null) {
 			Set<String> keys = multiPart.getFields().keySet();
@@ -104,14 +105,14 @@ public class CarrosResource {
 					String filename = field.getFormDataContentDisposition().getFileName();
 					String path = uploadService.upload(filename, in);
 					System.out.println("File: " + path);
-					return Response.Ok("File received sucessfully");
+					return ResponseWithUrl.Ok("File received sucessfully", path);
 				} catch (IOException e) {
 					e.printStackTrace();
-					return Response.Error("Error sending the file.");
+					return ResponseWithUrl.Error("Error sending the file.");
 				}
 			}
 		}
-		return Response.Ok("Invalid request");
+		return ResponseWithUrl.Error("Invalid request");
 	}
 	
 	@POST
