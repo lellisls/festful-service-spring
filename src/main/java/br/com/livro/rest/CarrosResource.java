@@ -141,7 +141,7 @@ public class CarrosResource {
 	@POST
 	@Path("/postFotoBase64")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public Response postFotoBase64(@FormParam("fileName") String fileName, @FormParam("base64") String base64) {
+	public ResponseWithUrl postFotoBase64(@FormParam("fileName") String fileName, @FormParam("base64") String base64) {
 		if( fileName != null && base64 != null ) {
 			try {
 				// Decode
@@ -150,14 +150,14 @@ public class CarrosResource {
 				// Faz o upload
 				String path = uploadService.upload(fileName, in);
 				System.out.println("File: " + path);
-				return Response.Ok("File received successfully");
+				return ResponseWithUrl.Ok("File received successfully", path);
 			} catch( Exception e ) {
 				e.printStackTrace();
-				return Response.Error("Error sending the file.");
+				return ResponseWithUrl.Error("Error sending the file.");
 			}
 		}
 		
-		return Response.Ok("Invalid request");
+		return ResponseWithUrl.Error("Invalid request");
 	}
 
 }
