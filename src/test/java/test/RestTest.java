@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 
 import br.com.livro.domain.Carro;
 import br.com.livro.domain.ResponseWithUrl;
@@ -21,13 +22,18 @@ import junit.framework.TestCase;
 
 public class RestTest extends TestCase {
 	String URL = "http://localhost:8080/carros/rest/";
+	private ClientConfig clientConfig;
+	private Client client;
 
-	public void testGetCarroId() {
-		ClientConfig clientConfig = new ClientConfig();
-		Client client = ClientBuilder.newClient(clientConfig);
+	public void setUp() {
+		clientConfig = new ClientConfig();
+		client = ClientBuilder.newClient(clientConfig);
 
 		client.register(GsonMessageBodyHandler.class);
+		client.register(HttpAuthenticationFeature.basic("admin", "admin123"));
+	}
 
+	public void testGetCarroId() {
 		WebTarget target = client.target(URL).path("/carros/11");
 
 		Response response = target.request(MediaType.APPLICATION_JSON).get();
@@ -36,19 +42,14 @@ public class RestTest extends TestCase {
 
 //		String json = response.readEntity(String.class);
 //		System.out.println(json);
+		assertEquals(200, status);
 
 		Carro c = response.readEntity(Carro.class);
 
-		assertEquals(200, status);
 		assertEquals("Ferrari FF", c.getNome());
 	}
 
 	public void testCreateCarro() {
-		ClientConfig clientConfig = new ClientConfig();
-		Client client = ClientBuilder.newClient(clientConfig);
-
-		client.register(GsonMessageBodyHandler.class);
-
 		WebTarget target = client.target(URL).path("/carros/");
 
 		Carro c = new Carro();
@@ -69,11 +70,6 @@ public class RestTest extends TestCase {
 	}
 
 	public void testPostFormParams() {
-		ClientConfig clientConfig = new ClientConfig();
-		Client client = ClientBuilder.newClient(clientConfig);
-
-		client.register(GsonMessageBodyHandler.class);
-
 		String base64 = Base64.getEncoder().encodeToString("Ricardo Lecheta".getBytes());
 		Form form = new Form();
 		form.param("fileName", "nome.txt");
@@ -94,18 +90,13 @@ public class RestTest extends TestCase {
 		assertNotNull(r.getUrl());
 		assertTrue(r.getUrl().endsWith("nome.txt"));
 	}
-	
+
 	public List<Carro> getCarrosByTipo(String tipo) {
-		ClientConfig clientConfig = new ClientConfig();
-		Client client = ClientBuilder.newClient(clientConfig);
-
-		client.register(GsonMessageBodyHandler.class);
-
 		WebTarget target = client.target(URL).path("/carros/tipo/" + tipo);
 
 		Response response = target.request(MediaType.APPLICATION_JSON).get();
 
-		assertEquals(response.getStatus(), 200);
+		assertEquals(200, response.getStatus());
 
 		List<Carro> carros = response.readEntity(new GenericType<List<Carro>>() {
 		});
@@ -113,11 +104,6 @@ public class RestTest extends TestCase {
 	}
 
 	public void testDeleteCarroId() {
-		ClientConfig clientConfig = new ClientConfig();
-		Client client = ClientBuilder.newClient(clientConfig);
-
-		client.register(GsonMessageBodyHandler.class);
-
 		List<Carro> carros = getCarrosByTipo("delete");
 		Carro c = carros.get(0);
 
