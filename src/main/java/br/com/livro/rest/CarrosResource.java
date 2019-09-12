@@ -9,6 +9,8 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
@@ -36,6 +38,7 @@ import br.com.livro.domain.UploadService;
 @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
 @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
 @Component
+@PermitAll
 public class CarrosResource {
 
 	@Autowired
@@ -73,18 +76,21 @@ public class CarrosResource {
 
 	@DELETE
 	@Path("{id}")
+	@RolesAllowed("admin")
 	public Response delete(@PathParam("id") long id) {
 		carroService.delete(id);
 		return Response.Ok("Carro deletado com sucesso.");
 	}
 
 	@POST
+	@RolesAllowed("admin")
 	public Response post(Carro carro) {
 		carroService.save(carro);
 		return Response.Ok("Carro salvo com sucesso.");
 	}
 
 	@PUT
+	@RolesAllowed("admin")
 	public Response put(Carro carro) {
 		carroService.save(carro);
 
