@@ -10,7 +10,7 @@
 	<url>http://maven.apache.org</url>
 	<properties>
 		<spring.version>4.1.6.RELEASE</spring.version>
-		<hibernate.version>4.3.11.Final</hibernate.version>
+		<hibernate.version>5.3.20.Final</hibernate.version>
 		<jersey.version>2.18</jersey.version>
 		<project.http.version>1.19.0</project.http.version>
 		<project.oauth.version>1.19.0</project.oauth.version>
